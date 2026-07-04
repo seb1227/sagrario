@@ -1,4 +1,4 @@
-var CACHE='sagrario-v1';
+var CACHE='sagrario-v2';
 var ASSETS=['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',function(e){
   e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(ASSETS);}).then(function(){return self.skipWaiting();}));

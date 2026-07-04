@@ -1736,6 +1736,12 @@ function renderInventario(){
     });
   });
   html+='<p style="font-size:11px; color:var(--bone-dim); margin-top:16px;">Toca un objeto para moverlo al cofre o eliminarlo. Imágenes desde galería: pendiente para la versión app.</p>';
+  html+='<div class="div-orn" style="margin-top:18px; color:var(--blood);"><span class="gdia"></span><span class="fd" style="font-size:9px; letter-spacing:.2em; color:var(--blood-bright);">ZONA PELIGROSA</span><span class="gdia"></span></div>';
+  html+='<button class="mini-btn danger" data-reset-app style="width:100%; padding:11px; letter-spacing:.06em;">Reiniciar todo el progreso</button>';
+  html+='<p style="font-size:10px; color:var(--bone-dim); margin-top:6px;">Borra niveles, historial, notas, inventario, agenda y pendientes. El día del reinicio arrancas en ceros, sin deudas de días anteriores.</p>';
+  html+='<div class="div-orn" style="color:var(--blood);"><span class="gdia"></span><span class="fd" style="font-size:9px; letter-spacing:.2em; color:var(--blood-bright);">ZONA PELIGROSA</span><span class="gdia"></span></div>';
+  html+='<button class="mini-btn danger" data-reset style="width:100%; padding:11px; margin-top:6px;">Reiniciar todo el progreso</button>';
+  html+='<p style="font-size:10px; color:var(--bone-dim); margin-top:6px;">Borra niveles, historial, notas, inventario y pendientes. El día del reinicio comienza limpio, sin castigos de días anteriores.</p>';
   document.getElementById('view-inventario').innerHTML=html;
 }
 
@@ -1992,6 +1998,35 @@ document.addEventListener('click', function(e){
     saveState();
     document.getElementById('modal-todo-item').classList.add('hidden');
     todoTarget=null; renderTodos(); return;
+  }
+
+  if(e.target.closest('[data-reset]')){
+    if(confirm('Esto borra TODO tu progreso del Sagrario. ¿Seguro?')){
+      if(confirm('Confirmación final: se perderá todo permanentemente.')){
+        try{ localStorage.removeItem(STORAGE_KEY); }catch(e2){}
+        state=defaultState();
+        rolloverIfNeeded();
+        saveState();
+        buildSigilRing();
+        renderGlobal();
+        showView('main');
+      }
+    }
+    return;
+  }
+
+  if(e.target.closest('[data-reset-app]')){
+    if(confirm('Esto borra TODO tu progreso del Sagrario: niveles, historial, notas, inventario, agenda y pendientes. ¿Seguro?')){
+      if(confirm('Última confirmación: no hay vuelta atrás. ¿Reiniciar todo?')){
+        try{ localStorage.removeItem(STORAGE_KEY); }catch(e4){}
+        state=defaultState();
+        rolloverIfNeeded();
+        saveState();
+        renderGlobal();
+        showView('main');
+      }
+    }
+    return;
   }
 
   var card=e.target.closest('.hcard');
